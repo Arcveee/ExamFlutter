@@ -47,7 +47,26 @@ class WalletApiClient {
     }
   }
 
-  Future<dynamic> getBills(String provider) async {}
+  Future<List<dynamic>> getBills(String code, String phone) async {
+    final response = await client.get(Uri.parse('$baseUrl/api/external/factures/$code/current?unite=$phone'));
+    if (response.statusCode == 200) {
+      return json.decode(response.body) as List<dynamic>;
+    } else {
+      throw Exception('status:${response.statusCode}');
+    }
+  }
 
-  Future<dynamic> payBills(List<String> billIds) async {}
+  Future<void> payBills(String phone, List<String> billIds) async {
+    final response = await client.post(
+      Uri.parse('$baseUrl/api/wallets/pay-factures'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'phone': phone,
+        'references': billIds,
+      }),
+    );
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception(response.body);
+    }
+  }
 }

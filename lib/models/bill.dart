@@ -1,31 +1,17 @@
 class Bill {
-  final String id;
-  final String provider;
+  final String reference;
   final double amount;
-  final bool isPaid;
+  final DateTime dueDate;
+  final String provider;
 
-  Bill({
-    required this.id,
-    required this.provider,
-    required this.amount,
-    required this.isPaid,
-  });
+  Bill({required this.reference, required this.amount, required this.dueDate, required this.provider});
 
   factory Bill.fromJson(Map<String, dynamic> json) {
     return Bill(
-      id: json['id'] as String,
-      provider: json['provider'] as String,
-      amount: (json['amount'] as num).toDouble(),
-      isPaid: json['isPaid'] as bool,
+      reference: json['reference'] ?? json['id'] ?? '',
+      amount: (json['amount'] ?? json['montant'] ?? 0).toDouble(),
+      dueDate: json['dueDate'] != null ? DateTime.parse(json['dueDate']) : DateTime.now(),
+      provider: json['provider'] ?? '',
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'provider': provider,
-      'amount': amount,
-      'isPaid': isPaid,
-    };
   }
 }

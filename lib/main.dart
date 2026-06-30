@@ -7,6 +7,7 @@ import 'core/router.dart';
 import 'features/dashboard/dashboard_provider.dart';
 import 'features/auth/auth_provider.dart';
 import 'features/transfers/transfers_provider.dart';
+import 'features/bills/bills_provider.dart';
 
 void main() {
   runApp(
@@ -33,6 +34,14 @@ void main() {
           ),
           update: (_, repository, dashboard, previous) =>
               previous ?? TransfersProvider(repository, dashboard),
+        ),
+        ChangeNotifierProxyProvider2<WalletRepository, DashboardProvider, BillsProvider>(
+          create: (context) => BillsProvider(
+            Provider.of<WalletRepository>(context, listen: false),
+            Provider.of<DashboardProvider>(context, listen: false),
+          ),
+          update: (_, repository, dashboard, previous) =>
+              previous ?? BillsProvider(repository, dashboard),
         ),
       ],
       child: const BadWalletApp(),
