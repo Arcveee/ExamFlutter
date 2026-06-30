@@ -32,7 +32,20 @@ class WalletApiClient {
     }
   }
 
-  Future<dynamic> transfer(String fromPhone, String toPhone, double amount) async {}
+  Future<void> transfer(String fromPhone, String toPhone, double amount) async {
+    final response = await client.post(
+      Uri.parse('$baseUrl/api/wallets/transfer'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'fromPhone': fromPhone,
+        'toPhone': toPhone,
+        'amount': amount,
+      }),
+    );
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception(response.body);
+    }
+  }
 
   Future<dynamic> getBills(String provider) async {}
 
