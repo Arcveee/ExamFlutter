@@ -22,4 +22,9 @@ class Formatter {
       return 'À l\'instant';
     }
   }
+
+  static String fullDate(DateTime date) {
+    final format = DateFormat('dd/MM/yyyy à HH:mm');
+    return format.format(date);
+  }
 }
