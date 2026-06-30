@@ -41,8 +41,7 @@ class _TransfersScreenState extends State<TransfersScreen> {
   void _nextStep() {
     if (_step == 0) {
       final recipient = _phoneController.text.trim();
-      final target = recipient.startsWith('+') ? recipient.substring(1) : recipient;
-      if (recipient.length == 13 && target != _myPhone) {
+      if (recipient.length == 13 && recipient != _myPhone) {
         setState(() => _step = 1);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -55,7 +54,7 @@ class _TransfersScreenState extends State<TransfersScreen> {
         setState(() => _step = 2);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Le montant minimum est de 100 XOF')),
+          const SnackBar(content: Text('Le montant minimum est de 100 FCFA')),
         );
       }
     }
@@ -63,9 +62,7 @@ class _TransfersScreenState extends State<TransfersScreen> {
 
   void _confirmTransfer(TransfersProvider provider) {
     final amount = double.tryParse(_amountString) ?? 0;
-    final recipient = _phoneController.text.trim();
-    final target = recipient.startsWith('+') ? recipient.substring(1) : recipient;
-    provider.executeTransfer(_myPhone, target, amount);
+    provider.executeTransfer(_myPhone, _phoneController.text.trim(), amount);
   }
 
   @override

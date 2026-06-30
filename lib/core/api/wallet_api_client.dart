@@ -32,13 +32,15 @@ class WalletApiClient {
   }
 
   Future<Map<String, dynamic>> getWallet(String phone) async {
-    final response = await _executeRequest(() => client.get(Uri.parse('$baseUrl/api/wallets/$phone')));
+    final uri = Uri.parse(baseUrl).replace(pathSegments: ['api', 'wallets', phone]);
+    final response = await _executeRequest(() => client.get(uri));
     return json.decode(response.body) as Map<String, dynamic>;
   }
 
-  Future<List<dynamic>> getTransactions(String phone) async {
-    final response = await _executeRequest(() => client.get(Uri.parse('$baseUrl/api/wallets/$phone/transactions')));
-    return json.decode(response.body) as List<dynamic>;
+  Future<Map<String, dynamic>> getTransactions(String phone) async {
+    final uri = Uri.parse(baseUrl).replace(pathSegments: ['api', 'wallets', phone, 'transactions']);
+    final response = await _executeRequest(() => client.get(uri));
+    return json.decode(response.body) as Map<String, dynamic>;
   }
 
   Future<void> transfer(String fromPhone, String toPhone, double amount) async {
@@ -46,25 +48,26 @@ class WalletApiClient {
           Uri.parse('$baseUrl/api/wallets/transfer'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({
-            'fromPhone': fromPhone,
-            'toPhone': toPhone,
+            'senderPhone': fromPhone,
+            'receiverPhone': toPhone,
             'amount': amount,
           }),
         ));
   }
 
   Future<List<dynamic>> getBills(String code, String phone) async {
-    final response = await _executeRequest(() => client.get(Uri.parse('$baseUrl/api/external/factures/$code/current?unite=$phone')));
+    final response = await _executeRequest(() => client.get(Uri.parse('$baseUrl/api/external/factures/$code/current')));
     return json.decode(response.body) as List<dynamic>;
   }
 
-  Future<void> payBills(String phone, List<String> billIds) async {
+  Future<void> payBills(String phone, String serviceName, List<String> billIds) async {
     await _executeRequest(() => client.post(
           Uri.parse('$baseUrl/api/wallets/pay-factures'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({
-            'phone': phone,
-            'references': billIds,
+            'phoneNumber': phone,
+            'serviceName': serviceName,
+            'factureReferences': billIds,
           }),
         ));
   }

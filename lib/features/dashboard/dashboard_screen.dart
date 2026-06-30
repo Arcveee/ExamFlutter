@@ -34,6 +34,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('BadWallet'),
+        elevation: 0,
+        backgroundColor: AppColors.bgSurface,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: AppColors.error),
+            onPressed: () async {
+              await _storage.deleteAll();
+              if (context.mounted) {
+                context.go('/auth');
+              }
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Consumer<DashboardProvider>(
           builder: (context, provider, child) {
@@ -121,7 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            state.isBalanceHidden ? '•••••• XOF' : Formatter.currency(state.wallet.balance),
+            state.isBalanceHidden ? '•••••• FCFA' : Formatter.currency(state.wallet.balance),
             style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
           ),
         ],
@@ -169,7 +185,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Column(
       children: state.recentTransactions.map((tx) {
-        final isIncoming = tx.toPhone == state.wallet.phone;
+        final isIncoming = tx.targetWalletId == state.wallet.id;
         final color = isIncoming ? AppColors.success : AppColors.error;
         final prefix = isIncoming ? '+' : '-';
 

@@ -9,7 +9,8 @@ class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
   final String phone;
-  AuthSuccess(this.phone);
+  final int walletId;
+  AuthSuccess(this.phone, this.walletId);
 }
 
 class AuthError extends AuthState {
@@ -28,9 +29,8 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final formattedPhone = phone.startsWith('+') ? phone.substring(1) : phone;
-      await repository.getWallet(formattedPhone);
-      state = AuthSuccess(phone);
+      final wallet = await repository.getWallet(phone);
+      state = AuthSuccess(phone, wallet.id);
       notifyListeners();
     } catch (e) {
       final msg = e.toString();

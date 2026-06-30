@@ -16,6 +16,7 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   final _storage = const FlutterSecureStorage();
   String _myPhone = '';
+  int _myWalletId = -1;
 
   final List<String> _filters = ['Tous', 'Dépôts', 'Retraits', 'Transferts', 'Paiements'];
 
@@ -27,8 +28,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Future<void> _loadHistory() async {
     final phone = await _storage.read(key: 'phone');
+    final walletIdStr = await _storage.read(key: 'walletId');
     if (mounted && phone != null) {
       _myPhone = phone;
+      _myWalletId = int.tryParse(walletIdStr ?? '') ?? -1;
       context.read<HistoryProvider>().fetchHistory(_myPhone);
     }
   }
@@ -66,21 +69,26 @@ class _HistoryScreenState extends State<HistoryScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: AppColors.success.withValues(alpha: 0.1),
+                  color: (tx.status == 'SUCCESS' ? AppColors.success : AppColors.error).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Text('Succès', style: TextStyle(color: AppColors.success, fontWeight: FontWeight.bold)),
+                child: Text(
+                  tx.status == 'SUCCESS' ? 'Succès' : 'Échoué',
+                  style: TextStyle(
+                    color: tx.status == 'SUCCESS' ? AppColors.success : AppColors.error,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               const SizedBox(height: 32),
               _buildDetailRow('Type', tx.type),
               const SizedBox(height: 16),
               _buildDetailRow('Date', Formatter.fullDate(tx.date)),
               const SizedBox(height: 16),
-              _buildDetailRow('Frais', '0 XOF'),
+              _buildDetailRow('Frais', Formatter.currency(tx.fee)),
               const SizedBox(height: 16),
-              _buildDetailRow('De', tx.fromPhone),
-              const SizedBox(height: 16),
-              _buildDetailRow('À', tx.toPhone),
+              _buildDetailRow('Wallet source', '#${tx.sourceWalletId}'),
+              if (tx.targetWalletId != null) ...[const SizedBox(height: 16), _buildDetailRow('Wallet cible', '#${tx.targetWalletId}')],
               const SizedBox(height: 32),
             ],
           ),
@@ -163,7 +171,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               itemCount: state.filteredTransactions.length,
                               itemBuilder: (context, index) {
                                 final tx = state.filteredTransactions[index];
-                                final isIncoming = tx.toPhone == _myPhone;
+                                final isIncoming = tx.targetWalletId == _myWalletId;
                                 final color = isIncoming ? AppColors.success : AppColors.error;
                                 final prefix = isIncoming ? '+' : '-';
 
