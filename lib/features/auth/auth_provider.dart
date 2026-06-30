@@ -42,4 +42,9 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void reset() {
+    state = AuthInitial();
+    notifyListeners();
+  }
 }

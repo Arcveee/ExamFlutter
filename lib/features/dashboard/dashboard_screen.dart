@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dashboard_provider.dart';
+import '../auth/auth_provider.dart';
 import '../../core/theme.dart';
 import '../../core/utils.dart';
 
@@ -44,6 +45,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             onPressed: () async {
               await _storage.deleteAll();
               if (context.mounted) {
+                context.read<AuthProvider>().reset();
                 context.go('/auth');
               }
             },
