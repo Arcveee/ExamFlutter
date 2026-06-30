@@ -8,6 +8,7 @@ import 'features/dashboard/dashboard_provider.dart';
 import 'features/auth/auth_provider.dart';
 import 'features/transfers/transfers_provider.dart';
 import 'features/bills/bills_provider.dart';
+import 'features/history/history_provider.dart';
 
 void main() {
   runApp(
@@ -42,6 +43,10 @@ void main() {
           ),
           update: (_, repository, dashboard, previous) =>
               previous ?? BillsProvider(repository, dashboard),
+        ),
+        ChangeNotifierProxyProvider<WalletRepository, HistoryProvider>(
+          create: (context) => HistoryProvider(Provider.of<WalletRepository>(context, listen: false)),
+          update: (_, repository, previous) => previous ?? HistoryProvider(repository),
         ),
       ],
       child: const BadWalletApp(),
