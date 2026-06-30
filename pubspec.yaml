@@ -1,7 +1,6 @@
 name: badwallet_mobile
-description: BadWallet Mobile - Application de portefeuille mobile consommant BadWallet API.
+description: BadWallet Mobile
 publish_to: 'none'
-
 version: 1.0.0+1
 
 environment:
@@ -10,51 +9,25 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  # Navigation
-  go_router: ^14.0.0
-
-  # State management
-  flutter_riverpod: ^2.5.1
-  riverpod_annotation: ^2.3.5
-
-  # HTTP & API
-  dio: ^5.4.3
-  retrofit: ^4.1.0
-
-  # Secure storage
-  flutter_secure_storage: ^9.2.2
-
-  # UI
-  cupertino_icons: ^1.0.6
-  google_fonts: ^6.2.1
-  shimmer: ^3.0.0
-
-  # Utils
+  provider: ^6.1.2
+  http: ^1.2.1
   intl: ^0.19.0
-  equatable: ^2.0.5
+  google_fonts: ^6.2.1
+  flutter_secure_storage: ^9.2.2
+  go_router: ^14.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
-  build_runner: ^2.4.9
-  riverpod_generator: ^2.4.0
-  retrofit_generator: ^8.1.0
-  json_serializable: ^6.8.0
-  json_annotation: ^4.9.0
+  flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
-#  assets:
-#    - assets/images/
-  fonts:
-    - family: Inter
-      fonts:
-        - asset: assets/fonts/Inter-Regular.ttf
-        - asset: assets/fonts/Inter-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Inter-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Inter-Bold.ttf
-          weight: 700
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"
+  adaptive_icon_background: "#252640"
+  adaptive_icon_foreground: "assets/icon.png"
