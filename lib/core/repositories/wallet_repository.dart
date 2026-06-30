@@ -22,11 +22,12 @@ class WalletRepository {
     await apiClient.transfer(fromPhone, toPhone, amount);
   }
 
-  Future<List<Bill>> getBills(String provider) async {
-    throw UnimplementedError();
+  Future<List<Bill>> getBills(String code, String phone) async {
+    final data = await apiClient.getBills(code, phone);
+    return data.map((json) => Bill.fromJson(json as Map<String, dynamic>)).toList();
   }
 
-  Future<void> payBills(List<String> billIds) async {
-    throw UnimplementedError();
+  Future<void> payBills(String phone, List<String> billIds) async {
+    await apiClient.payBills(phone, billIds);
   }
 }
