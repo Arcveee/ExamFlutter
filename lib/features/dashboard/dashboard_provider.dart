@@ -60,7 +60,7 @@ class DashboardProvider extends ChangeNotifier {
       state = DashboardLoaded(wallet, recent);
       notifyListeners();
     } catch (e) {
-      state = DashboardError('Erreur de chargement. Veuillez réessayer.');
+      state = DashboardError(e.toString().replaceAll('Exception: ', ''));
       notifyListeners();
     }
   }

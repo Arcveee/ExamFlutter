@@ -39,7 +39,7 @@ class BillsProvider extends ChangeNotifier {
       state = BillsLoaded(bills);
       notifyListeners();
     } catch (e) {
-      state = BillsError('Erreur lors de la récupération des factures.');
+      state = BillsError(e.toString().replaceAll('Exception: ', ''));
       notifyListeners();
     }
   }
@@ -65,7 +65,7 @@ class BillsProvider extends ChangeNotifier {
         dashboardProvider.loadDashboard(phone);
         notifyListeners();
       } catch (e) {
-        state = BillsError('Échec du paiement. Solde insuffisant ?');
+        state = BillsError(e.toString().replaceAll('Exception: ', ''));
         notifyListeners();
       }
     }

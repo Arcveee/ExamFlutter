@@ -33,10 +33,11 @@ class AuthProvider extends ChangeNotifier {
       state = AuthSuccess(phone);
       notifyListeners();
     } catch (e) {
-      if (e.toString().contains('404')) {
+      final msg = e.toString();
+      if (msg.contains('404')) {
         state = AuthError('Ce numéro ne correspond à aucun wallet. Veuillez contacter un agent.');
       } else {
-        state = AuthError('Erreur de connexion au serveur.');
+        state = AuthError(msg.replaceAll('Exception: ', ''));
       }
       notifyListeners();
     }

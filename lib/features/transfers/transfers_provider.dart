@@ -33,6 +33,8 @@ class TransfersProvider extends ChangeNotifier {
         state = TransferError('Solde insuffisant.');
       } else if (msg.contains('not found') || msg.contains('introuvable')) {
         state = TransferError('Destinataire introuvable.');
+      } else if (msg.contains('connexion') || msg.contains('délai')) {
+        state = TransferError(e.toString().replaceAll('Exception: ', ''));
       } else {
         state = TransferError('Échec du transfert.');
       }
