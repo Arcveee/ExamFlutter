@@ -34,7 +34,7 @@ class HistoryProvider extends ChangeNotifier {
       state = HistoryLoaded(transactions, transactions, 'Tous');
       notifyListeners();
     } catch (e) {
-      state = HistoryError('Erreur de chargement.');
+      state = HistoryError(e.toString().replaceAll('Exception: ', ''));
       notifyListeners();
     }
   }
