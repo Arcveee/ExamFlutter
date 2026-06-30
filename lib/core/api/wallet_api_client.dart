@@ -22,7 +22,21 @@ class WalletApiClient {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return response;
       } else {
-        throw Exception('status:${response.statusCode} - ${response.body}');
+        try {
+          final body = json.decode(response.body);
+          if (body is Map && body.containsKey('detail')) {
+            throw Exception(body['detail']);
+          } else if (body is Map && body.containsKey('message')) {
+            throw Exception(body['message']);
+          } else if (body is Map && body.containsKey('errors')) {
+            throw Exception(body['errors'].toString());
+          }
+        } catch (e) {
+          if (e.toString().startsWith('Exception:')) {
+            rethrow;
+          }
+        }
+        throw Exception('Erreur serveur (code: ${response.statusCode})');
       }
     } on SocketException {
       throw Exception('Aucune connexion Internet. Veuillez vérifier votre réseau.');
