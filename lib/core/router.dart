@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../features/splash/splash_screen.dart';
 import '../features/auth/auth_screen.dart';
+import '../features/auth/pin_screen.dart';
 import '../features/shell/app_shell.dart';
 import '../features/dashboard/dashboard_screen.dart';
 import '../features/transfers/transfers_screen.dart';
@@ -21,6 +22,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/auth',
       builder: (context, state) => const AuthScreen(),
+    ),
+    GoRoute(
+      path: '/pin-setup',
+      builder: (context, state) => const PinScreen(isSetup: true),
+    ),
+    GoRoute(
+      path: '/pin-verify',
+      builder: (context, state) => const PinScreen(isSetup: false),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

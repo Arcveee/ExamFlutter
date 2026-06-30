@@ -18,15 +18,20 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _checkAuth() async {
     await Future.delayed(const Duration(seconds: 2));
-    if (!context.mounted) return;
+    if (!mounted) return;
 
     const storage = FlutterSecureStorage();
     final phone = await storage.read(key: 'phone');
+    final pin = await storage.read(key: 'pin');
 
-    if (!context.mounted) return;
+    if (!mounted) return;
 
     if (phone != null && phone.isNotEmpty) {
-      context.go('/dashboard');
+      if (pin != null && pin.isNotEmpty) {
+        context.go('/pin-verify');
+      } else {
+        context.go('/dashboard');
+      }
     } else {
       context.go('/auth');
     }

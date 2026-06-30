@@ -9,11 +9,13 @@ class WalletRepository {
   WalletRepository(this.apiClient);
 
   Future<Wallet> getWallet(String phone) async {
-    throw UnimplementedError();
+    final data = await apiClient.getWallet(phone);
+    return Wallet.fromJson(data);
   }
 
   Future<List<Transaction>> getTransactions(String phone) async {
-    throw UnimplementedError();
+    final data = await apiClient.getTransactions(phone);
+    return data.map((json) => Transaction.fromJson(json as Map<String, dynamic>)).toList();
   }
 
   Future<void> transfer(String fromPhone, String toPhone, double amount) async {

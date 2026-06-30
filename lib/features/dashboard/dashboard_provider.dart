@@ -41,5 +41,27 @@ class DashboardProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> loadDashboard(String phone) async {}
+  Future<void> loadDashboard(String phone) async {
+    state = DashboardLoading();
+    notifyListeners();
+
+    try {
+      final results = await Future.wait([
+        repository.getWallet(phone),
+        repository.getTransactions(phone),
+      ]);
+
+      final wallet = results[0] as Wallet;
+      final allTransactions = results[1] as List<Transaction>;
+
+      allTransactions.sort((a, b) => b.date.compareTo(a.date));
+      final recent = allTransactions.take(5).toList();
+
+      state = DashboardLoaded(wallet, recent);
+      notifyListeners();
+    } catch (e) {
+      state = DashboardError('Erreur de chargement. Veuillez réessayer.');
+      notifyListeners();
+    }
+  }
 }
