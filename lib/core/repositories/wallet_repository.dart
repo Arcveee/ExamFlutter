@@ -19,7 +19,7 @@ class WalletRepository {
   }
 
   Future<void> transfer(String fromPhone, String toPhone, double amount) async {
-    throw UnimplementedError();
+    await apiClient.transfer(fromPhone, toPhone, amount);
   }
 
   Future<List<Bill>> getBills(String provider) async {
