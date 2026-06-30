@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 class Formatter {
   static String currency(double amount) {
-    final format = NumberFormat.currency(locale: 'fr_FR', symbol: 'XOF', decimalDigits: 0);
+    final format = NumberFormat.currency(locale: 'fr_FR', symbol: 'FCFA', decimalDigits: 0);
     return format.format(amount);
   }
 

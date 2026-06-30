@@ -53,14 +53,14 @@ class BillsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> paySelectedBills(String phone) async {
+  Future<void> paySelectedBills(String phone, String serviceName) async {
     if (state is BillsLoaded) {
       final currentBills = (state as BillsLoaded).bills;
       state = BillsPaymentLoading(currentBills);
       notifyListeners();
 
       try {
-        await repository.payBills(phone, selectedBills.toList());
+        await repository.payBills(phone, serviceName, selectedBills.toList());
         state = BillsPaymentSuccess();
         dashboardProvider.loadDashboard(phone);
         notifyListeners();

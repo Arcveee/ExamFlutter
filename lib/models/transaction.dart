@@ -1,39 +1,34 @@
 class Transaction {
-  final String id;
-  final String fromPhone;
-  final String toPhone;
-  final double amount;
+  final int id;
   final String type;
+  final double amount;
+  final double fee;
+  final String status;
+  final int sourceWalletId;
+  final int? targetWalletId;
   final DateTime date;
 
   Transaction({
     required this.id,
-    required this.fromPhone,
-    required this.toPhone,
-    required this.amount,
     required this.type,
+    required this.amount,
+    required this.fee,
+    required this.status,
+    required this.sourceWalletId,
+    required this.targetWalletId,
     required this.date,
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
-      id: json['id'] as String,
-      fromPhone: json['fromPhone'] as String,
-      toPhone: json['toPhone'] as String,
-      amount: (json['amount'] as num).toDouble(),
+      id: json['id'] as int,
       type: json['type'] as String,
-      date: DateTime.parse(json['date'] as String),
+      amount: (json['amount'] as num).toDouble(),
+      fee: (json['fee'] as num).toDouble(),
+      status: json['status'] as String,
+      sourceWalletId: json['sourceWalletId'] as int,
+      targetWalletId: json['targetWalletId'] as int?,
+      date: DateTime.parse(json['createdAt'] as String),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'fromPhone': fromPhone,
-      'toPhone': toPhone,
-      'amount': amount,
-      'type': type,
-      'date': date.toIso8601String(),
-    };
   }
 }

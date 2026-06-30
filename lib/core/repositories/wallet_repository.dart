@@ -15,7 +15,8 @@ class WalletRepository {
 
   Future<List<Transaction>> getTransactions(String phone) async {
     final data = await apiClient.getTransactions(phone);
-    return data.map((json) => Transaction.fromJson(json as Map<String, dynamic>)).toList();
+    final content = data['content'] as List<dynamic>;
+    return content.map((json) => Transaction.fromJson(json as Map<String, dynamic>)).toList();
   }
 
   Future<void> transfer(String fromPhone, String toPhone, double amount) async {
@@ -27,7 +28,7 @@ class WalletRepository {
     return data.map((json) => Bill.fromJson(json as Map<String, dynamic>)).toList();
   }
 
-  Future<void> payBills(String phone, List<String> billIds) async {
-    await apiClient.payBills(phone, billIds);
+  Future<void> payBills(String phone, String serviceName, List<String> billIds) async {
+    await apiClient.payBills(phone, serviceName, billIds);
   }
 }

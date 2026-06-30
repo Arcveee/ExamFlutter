@@ -44,7 +44,9 @@ class _AuthScreenState extends State<AuthScreen> {
             builder: (context, authProvider, child) {
               if (authProvider.state is AuthSuccess) {
                 WidgetsBinding.instance.addPostFrameCallback((_) async {
-                  await _storage.write(key: 'phone', value: _phoneController.text.trim());
+                  final success = authProvider.state as AuthSuccess;
+                  await _storage.write(key: 'phone', value: success.phone);
+                  await _storage.write(key: 'walletId', value: success.walletId.toString());
                   if (context.mounted) {
                     context.go('/pin-setup');
                   }

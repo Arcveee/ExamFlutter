@@ -193,7 +193,7 @@ class _BillsScreenState extends State<BillsScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: provider.selectedBills.isEmpty || isPaying ? null : () => provider.paySelectedBills(_myPhone),
+                    onPressed: provider.selectedBills.isEmpty || isPaying ? null : () => provider.paySelectedBills(_myPhone, _selectedProvider!),
                     child: isPaying
                         ? const CircularProgressIndicator(color: Colors.white)
                         : Text('Payer la sélection (${provider.selectedBills.length})'),
